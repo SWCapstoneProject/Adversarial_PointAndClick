@@ -32,7 +32,7 @@ REPLAY_MEMORY = 100000
 BATCH_SIZE = 32
 TARGET_UPDATE_FREQUENCY = 1000
 MAX_EPISODES = 5000000
-SAVE_PERIOD = 1000
+SAVE_PERIOD = 10
 E_DECAY = 0.9998
 E_MIN = 0.05
 
@@ -192,7 +192,7 @@ def main():
                             extra_effort = 0
                             # nested while loop
 
-                            while not done:
+                            while not done_2:
                                 # Get the q table
                                 q_values_2 = mainDQN_2.predict(state_2)
                                 q_value_2 += np.mean(q_values_2)
@@ -204,7 +204,7 @@ def main():
                                     action_2 = env_2.action_space.sample()
 
                                 # Get new state and reward from environment
-                                next_state, local_extra_effort, click_reward, done, _ = env_2.step(action_2)
+                                next_state, local_extra_effort, click_reward, done_2, _ = env_2.step(action_2)
                                 extra_effort += local_extra_effort
 
                                 # Save the experience to our buffer
@@ -219,8 +219,8 @@ def main():
                                 if step_count_2 % TARGET_UPDATE_FREQUENCY == 0:
                                     sess.run(copy_ops2)
 
-                                score_2 += reward_2
-                                state_2 = next_state_2
+                                score_2 += local_extra_effort + click_reward
+                                state_2 = next_state
                                 step_count_2 += 1
 
                             reward_1 = effort_reward_1 + click_reward_1
@@ -239,7 +239,7 @@ def main():
                             extra_effort = 0
                             # nested while loop
 
-                            while not done:
+                            while not done_1:
                                 # Get the q table
                                 q_values_1 = mainDQN_1.predict(state_1)
                                 q_value_1 += np.mean(q_values_1)
@@ -251,7 +251,7 @@ def main():
                                     action_1 = env_1.action_space.sample()
 
                                 # Get new state and reward from environment
-                                next_state, local_extra_effort, click_reward, done, _ = env_1.step(action_1)
+                                next_state, local_extra_effort, click_reward, done_1, _ = env_1.step(action_1)
                                 extra_effort += local_extra_effort
 
                                 # Save the experience to our buffer
@@ -267,8 +267,8 @@ def main():
                                 if step_count_1 % TARGET_UPDATE_FREQUENCY == 0:
                                     sess.run(copy_ops1)
 
-                                score_1 += reward_1
-                                state_1 = next_state_1
+                                score_1 += local_extra_effort + click_reward
+                                state_1 = next_state
                                 step_count_1 += 1
 
                             reward_1 = effort_reward_1 + click_reward_1 + extra_effort + click_reward
@@ -328,15 +328,13 @@ def main():
 
             # Log the data
             if count_1 == 0:
-                assert count_2 == 0
                 score_logger_1.add_csv(loss_1, q_value_1, score_1, env_1.time, env_1.effort, env_1.click, episode, agent_number=1)
                 score_logger_2.add_csv(loss_2, q_value_2, score_2, env_2.time, env_2.effort, env_2.click, episode, agent_number=2)
             else:
-                assert count_2 != 0
                 score_logger_1.add_csv(loss_1 / count_1, q_value_1 / count_1, score_1, env_1.time, env_1.effort, env_1.click, episode, agent_number=1)
                 score_logger_2.add_csv(loss_2 / count_2, q_value_2 / count_2, score_2, env_1.time, env_2.effort, env_2.click, episode, agent_number=2)
 
-            if episode % 1000 == 0 or os.path.exists('./check'):
+            if episode % 10 == 0 or os.path.exists('./check'):
                 _, _, _, ave = score_logger_1.score_show()
                 _, _, _, ave_loss = score_logger_1.loss_show()
                 _, _, _, ave_q = score_logger_1.q_value_show()
