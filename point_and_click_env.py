@@ -51,6 +51,7 @@ class Env(gym.Env):
         Click Success Reward (14) - Sum of the acceleration     : When the cursor successes to click and catch the target
         Click Failure Reward (-1) - Sum of the acceleration     : When the cursor clicks the target but fails to catch the target
         - Sum of the acceleration                               : Any other steps
+
     Starting State:
         All observations are assigned a uniform random value in window
     Episode Termination:
@@ -58,6 +59,7 @@ class Env(gym.Env):
     """
 
     def __init__(self):
+
         # User Parameters for BUMP model
         self.Tp = 0.1  # Planning time
         self.nc = [0.2, 0.02]  # Motor noise parameter
@@ -121,8 +123,11 @@ class Env(gym.Env):
         self.clickWeight = 14
         self.clickFailWeight = -1
 
-    def seed(self, seed=None):
+    def seed(self, seed=1):
+        # TODO : Fix Seed
         self.np_random, seed = seeding.np_random(seed)
+        np.random.seed(seed)
+        # TODO
         return [seed]
 
     def step(self, action):
@@ -160,7 +165,7 @@ class Env(gym.Env):
 
                 reward = -(self.timeWeight * clutch_time)
                 done = False
-                return np.array(self.state), reward, done, {}
+                return np.array(self.state), reward, -999, done, {}
 
         # Action space 
         threshold_id = self.ThresholdID[action // len(self.Th)]
@@ -242,13 +247,13 @@ class Env(gym.Env):
         self.handPos = [h_pos_x, h_pos_y]
 
         # Final reward
-        reward = time_reward + effort_reward + click_reward
+        effort_reward = time_reward + effort_reward
 
         if time_click > active_time:
             self.time += active_time
             self.effort += effort
 
-        return np.array(self.state), reward, done, {}
+        return np.array(self.state), effort_reward, click_reward, done, {}
 
     def reset(self):
         cp_x, cp_y, cv_x, cv_y, _, _, _, _, _, hp_x, hp_y = self.state
