@@ -1,4 +1,17 @@
-# Point-and-Click-Model
+-------- Ours ----------
+
+## Major Update Logs
+
+### 2021.04.09 19:00 - Initial Refactoring
+1. 
+
+
+
+
+
+
+-------- Original ---------
+Point-and-Click-Model
 This is a simulation model of intermittently controlled point-and-click behavior
 
 ### commit 규칙
