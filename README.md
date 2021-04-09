@@ -1,3 +1,7 @@
+# Simulating Realistic Point-and-Click Behavior in Result-Driven Adversarial Environment
+
+**By <a href="http://github.com/jinhyung426/" target="_blank">Jinhyung Park</a>, <a href="https://github.com/Clap2rap" target="_blank">Hyeonwoo Lee</a>, <a href="https://github.com/qwert92a" target="_blank">Gyucheol Sim</a> from Yonsei University (Seoul, Korea)**
+
 ## How To Run
     pip install -r requirements.txt
     python main.py
