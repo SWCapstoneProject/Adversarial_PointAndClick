@@ -21,10 +21,10 @@ class ScoreLogger:
 
         if os.path.exists(CSV_PATH):
             shutil.rmtree(CSV_PATH)
-            
+
         os.mkdir(CSV_PATH)
 
-    # TODO : added agent number for save filename
+    # Ours - added agent number for save filename
     def add_csv(self, loss, q_value, score, time, effort, click, run, agent_number):
         path = "./outputs/output" + str(run // self.ave_num) + f"agent_{agent_number}" + ".csv"
         if not os.path.exists(path):

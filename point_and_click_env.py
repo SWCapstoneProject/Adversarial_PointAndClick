@@ -9,7 +9,8 @@ import modules.motor_control_module as motor
 import modules.visual_perception_module as visual
 
 from collections import deque
-import os
+
+SEED = 1
 
 
 class Env(gym.Env):
@@ -93,7 +94,7 @@ class Env(gym.Env):
         self.action_space = spaces.Discrete(self.action_size)
         self.observation_space = spaces.Box(low, high, dtype=np.float32)
 
-        self.seed()
+        self.seed(seed=SEED)
         self.viewer = None
         self.state = np.concatenate((self.np_random.uniform(low=0, high=self.window_width, size=(1,)),
                                      self.np_random.uniform(low=0, high=self.window_height, size=(1,)),
@@ -123,11 +124,8 @@ class Env(gym.Env):
         self.clickWeight = 14
         self.clickFailWeight = -1
 
-    def seed(self, seed=1):
-        # TODO : Fix Seed
+    def seed(self, seed=SEED):
         self.np_random, seed = seeding.np_random(seed)
-        np.random.seed(seed)
-        # TODO
         return [seed]
 
     def step(self, action):
@@ -165,9 +163,9 @@ class Env(gym.Env):
 
                 reward = -(self.timeWeight * clutch_time)
                 done = False
-                return np.array(self.state), reward, -999, done, {}
+                return np.array(self.state), reward, 0, done, {}
 
-        # Action space 
+        # Action space
         threshold_id = self.ThresholdID[action // len(self.Th)]
         th = int(round(self.Th[action % len(self.Th)] / self.Interval))
         tp = int(round(self.Tp / self.Interval))
