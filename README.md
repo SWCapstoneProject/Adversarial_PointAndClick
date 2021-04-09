@@ -1,7 +1,20 @@
-## Major Update Logs
+# Major Update Logs
 
-### 2021.04.09 19:00 - Initial Refactoring
-1. 
+## 2021.04.09 19:00 - Initial Refactoring
+### 1. Constants.py 
+ - Hyperparameter 및 기타 상수 저장
+### 3. main.py 
+ - main 함수가 있는 py 파일 (기존의 point_and_click_agent.py 파일을 정리)
+### 4. point_and_click_agent.py
+ - 
+
+
+
+
+
+
+
+
 
 
 
