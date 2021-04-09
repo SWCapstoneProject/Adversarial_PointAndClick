@@ -2,8 +2,9 @@
 
 **By <a href="http://github.com/jinhyung426/" target="_blank">Jinhyung Park</a>, <a href="https://github.com/Clap2rap" target="_blank">Hyeonwoo Lee</a>, <a href="https://github.com/qwert92a" target="_blank">Gyucheol Sim</a> from Yonsei University (Seoul, Korea)**
 
-![teaser](https://github.com/SWCapstoneProject/MulitAgent_PointAndClick/blob/main/utils/teaser.JPG)
-
+<p align="center">
+  <img width="460" height="300" src="https://github.com/SWCapstoneProject/MulitAgent_PointAndClick/blob/main/utils/teaser.JPG">
+</p>
 
 ## How To Run
     pip install -r requirements.txt
