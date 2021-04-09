@@ -26,7 +26,7 @@ class ScoreLogger:
 
     # Ours - added agent number for save filename
     def add_csv(self, loss, q_value, score, time, effort, click, run, agent_number):
-        path = "./outputs/output" + str(run // self.ave_num) + f"agent_{agent_number}" + ".csv"
+        path = "./outputs/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
         if not os.path.exists(path):
             with open(path, "w"):
                 pass
