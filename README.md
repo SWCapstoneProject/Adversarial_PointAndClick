@@ -10,7 +10,8 @@
 ## Major Update Logs
 
 ### 2021.04.09 19:00 - Initial Refactoring
-**By Jinhyung Park
+**By Jinhyung Park**
+
 #### 1. Constants.py 
  - Hyperparameter 및 기타 상수 저장
 #### 2. main.py 
