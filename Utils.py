@@ -68,7 +68,7 @@ def determine_reward(my_agent, opponent,
                      my_effort_reward, my_click_reward,
                      opponent_effort_reward, opponent_click_reward,
                      my_agent_dqn, opponent_dqn, target_dqn, sess,
-                     my_agent_vars, opponent_vars, e):
+                     my_agent_vars, opponent_vars, e_my_agent, e_opponent):
 
     # TODO : Reassigning my_click_reward and opponent_click_reward needs to be modified for Reward Reshaping
 
@@ -78,9 +78,8 @@ def determine_reward(my_agent, opponent,
 
             if my_click_reward == 14 and opponent_click_reward == 14:
                 # Both Succeed : my_click_reward == 11, opponent_click_reward == 11
-                my_click_reward = 11
-                opponent_click_reward = 11
-
+                pass 
+                
             elif my_click_reward == 14 and opponent_click_reward == -1:
                 # My Agent Won, Opponent failed : my_click_reward == 14, opponent_click_reward == -1
                 pass
@@ -102,8 +101,8 @@ def determine_reward(my_agent, opponent,
 
             if my_click_reward == 14:
                 # My agent succeed, so terminate opponent's trial immediately
-                # my_click_reward == 14, opponent_click_reward == 0 (assign 0 since the opponent might have succeeded or failed in the future)
-                pass
+                opponent_click_reward = -1
+                opponent_env.fail_rate.append(0)
 
             else:
                 # My agent failed, so opponent can still go on
@@ -111,8 +110,8 @@ def determine_reward(my_agent, opponent,
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
                                                                                opponent_replay_buffer, opponent_dqn, target_dqn,
-                                                                               sess, opponent_vars, e)
-                opponent_effort_reward += extra_effort_reward
+                                                                               sess, opponent_vars, e_opponent)
+                opponent_effort_reward = opponent_effort_reward + extra_effort_reward
                 opponent_click_reward = extra_click_reward
 
     else:
@@ -123,8 +122,8 @@ def determine_reward(my_agent, opponent,
 
             if opponent_click_reward == 14:
                 # Opponent succeed, so terminate my agent's trial immediately
-                # my_click_reward == 0, opponent_click_reward == 14 (assign 0 since my agent might have succeeded or failed in the future)
-                pass
+                my_click_reward = -1
+                my_agent_env.fail_rate.append(0)
 
             else:
                 # Opponent failed, so my agent can still go on
@@ -132,7 +131,7 @@ def determine_reward(my_agent, opponent,
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
                                                                                my_agent_replay_buffer, my_agent_dqn, target_dqn,
-                                                                               sess, my_agent_vars, e)
+                                                                               sess, my_agent_vars, e_my_agent)
                 my_effort_reward += extra_effort_reward
                 my_click_reward = extra_click_reward
 
@@ -163,12 +162,14 @@ def log_data(agent, agent_env, score_logger, episode, agent_number):
         time_mean = sum(agent_env.time_mean) / len(agent_env.time_mean)
         time_std = (sum([((x - time_mean) ** 2) for x in agent_env.time_mean]) / len(agent_env.time_mean)) ** 0.5
         error_rate = 1 - (sum(agent_env.error_rate) / len(agent_env.error_rate))
-        print("Agent {} Episode: {:}, Reward: {:.4}, Loss: {:.4}, Q Value: {:.4}, Time: {:.4} (SD: {:.4}), ER: {:.4}".format(
-            agent_number, episode, float(ave), float(ave_loss), float(ave_q), float(time_mean), float(time_std), float(error_rate)))
+        fail_rate = 1 - (sum(agent_env.fail_rate) / len(agent_env.fail_rate))
+        print("Agent {} Episode: {:}, Reward: {:.4}, Loss: {:.4}, Q Value: {:.4}, Time: {:.4} (SD: {:.4}), ER: {:.4}, FR: {:.4}".format(
+            agent_number, episode, float(ave), float(ave_loss), float(ave_q), float(time_mean), float(time_std), float(error_rate), float(fail_rate)))
 
 
 def save_model(score_logger, agent_dqn, episode, agent_type):
     _, score_ave, _, _ = score_logger.score_show()
     _, loss_ave, _, _ = score_logger.loss_show()
+
     agent_dqn.save(episode, score_ave, loss_ave)
     print("{} model saved".format(agent_type), episode, score_ave, loss_ave)
