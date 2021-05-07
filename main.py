@@ -44,11 +44,14 @@ def main():
         sess.run(my_agent_vars)
         sess.run(opponent_vars)
 
-        e = 1
+        e_my_agent = 1
+        e_opponent = 1
 
         for episode in range(MAX_EPISODES + 1):
-            if e > E_MIN:
-                e *= E_DECAY
+            if e_my_agent > E_MIN:
+                e_my_agent *= E_DECAY
+            if e_opponent > E_MIN:
+                e_opponent *= E_DECAY
 
             my_agent = Agent(name='my_agent')
             opponent = Agent(name='opponent')
@@ -68,8 +71,10 @@ def main():
                 my_action = np.argmax(my_q_values)
                 opponent_action = np.argmax(opponent_q_values)
 
-                if np.random.rand() < e:
+                if np.random.rand() < e_my_agent:
                     my_action = my_agent_env.action_space.sample()
+		
+                if np.random.rand() < e_opponent:
                     opponent_action = opponent_env.action_space.sample()
 
                 # Get new state and reward from environment
@@ -83,7 +88,7 @@ def main():
                                                               my_effort_reward, my_click_reward,
                                                               opponent_effort_reward, opponent_click_reward,
                                                               my_agent_dqn, opponent_dqn, target_dqn, sess,
-                                                              my_agent_vars, opponent_vars, e)
+                                                              my_agent_vars, opponent_vars, e_my_agent, e_opponent)
                 # Save the experience to our buffer
                 my_agent.update_replay_buffer(my_agent_replay_buffer, my_action, my_reward, my_next_state, my_agent_dqn, target_dqn)
                 opponent.update_replay_buffer(opponent_replay_buffer, opponent_action, opponent_reward, opponent_next_state, opponent_dqn, target_dqn)

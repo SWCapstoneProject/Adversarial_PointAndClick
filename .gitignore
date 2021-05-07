@@ -1,7 +1,11 @@
+# VirtualEnv
+pac
+
 # Directories
 /models/*
 /outputs/*
-
+/*_models/
+/*_outputs/
 # MacBook
 .DS_Store
 

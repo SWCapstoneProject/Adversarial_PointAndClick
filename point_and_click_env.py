@@ -111,6 +111,7 @@ class Env(gym.Env):
         self.click = 0
         self.time_mean = deque(maxlen=1000)
         self.error_rate = deque(maxlen=1000)
+        self.fail_rate = deque(maxlen=1000)
 
         # True values
         self.cursorPos = [0, 0]
@@ -217,10 +218,12 @@ class Env(gym.Env):
                 click_reward = self.clickWeight
                 self.click = click_reward
                 self.error_rate.append(1)
+                self.fail_rate.append(1)
             else:
                 click_reward = self.clickFailWeight
                 self.click = click_reward
                 self.error_rate.append(0)
+                self.fail_rate.append(0)
 
         # User values
         c_pos_x = self.cursorPos[0] + cursor_delta[0]
