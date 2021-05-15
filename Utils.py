@@ -163,6 +163,13 @@ def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number
     error_rate = 1 - (sum(agent_env.error_rate) / len(agent_env.error_rate))
     fail_rate = 1 - (sum(agent_env.fail_rate) / len(agent_env.fail_rate))
 
+    if agent.count == 0:
+        score_logger.add_csv(agent.loss, agent.q_value, agent.score, agent_env.time,
+                             agent_env.effort, click_reward, episode, error_rate, fail_rate, agent_number)
+    else:
+        score_logger.add_csv(agent.loss / agent.count, agent.q_value / agent.count, agent.score,
+                             agent_env.time, agent_env.effort, click_reward, episode, error_rate, fail_rate, agent_number)
+
     if episode % PRINT_FREQUENCY == 0 or os.path.exists('./check'):
         _, _, _, ave = score_logger.score_show()
         _, _, _, ave_loss = score_logger.loss_show()
@@ -172,13 +179,7 @@ def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number
         print("Agent {} Episode: {:}, Reward: {:.4}, Loss: {:.4}, Q Value: {:.4}, Time: {:.4} (SD: {:.4}), ER: {:.4}, FR: {:.4}".format(
             agent_number, episode, float(ave), float(ave_loss), float(ave_q), float(time_mean), float(time_std), float(error_rate), float(fail_rate)))
 
-    if agent.count == 0:
-        score_logger.add_csv(agent.loss, agent.q_value, agent.score, agent_env.time,
-                             agent_env.effort, click_reward, episode, error_rate, fail_rate, agent_number)
-    else:
-        score_logger.add_csv(agent.loss / agent.count, agent.q_value / agent.count, agent.score,
-                             agent_env.time, agent_env.effort, click_reward, episode, error_rate, fail_rate, agent_number)
-
+    
 
 def save_model(score_logger, agent_dqn, episode, agent_type):
     _, score_ave, _, _ = score_logger.score_show()
