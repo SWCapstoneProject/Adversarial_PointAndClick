@@ -77,13 +77,13 @@ class DQN:
         }
         return self.session.run([self._loss, self._train], feed)
 
-    def load(self, name):
-        saver = tf.train.import_meta_graph('models_with_diff_termination.meta')
-        saver.restore(self.session, tf.train.latest_checkpoint('./'))
+    def load(self, path_to_model):
+        saver = tf.train.import_meta_graph(f'{path_to_model}/model_with_diff_termination.meta')
+        saver.restore(self.session, f'{path_to_model}/')
 
     def save(self, run, score_mean, loss_mean):
         if not os.path.exists('./models_with_diff_termination_retrained_0515'):
             os.mkdir('./models_with_diff_termination_retrained_0515')
-        filename = "models_with_diff_termination_retrained_0515/" + str(run) + "_" + str(round(score_mean, 3)) + "_" + str(round(loss_mean, 6)) + "/models_with_diff_termination_retrained_0515"
+        filename = "models_with_diff_termination_retrained_0515/" + str(run) + "_" + str(round(score_mean, 3)) + "_" + str(round(loss_mean, 6)) + "_" + self.net_name + "/model"
         saver = tf.train.Saver()
         saver.save(self.session, filename)
