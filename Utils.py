@@ -100,8 +100,14 @@ def determine_reward(my_agent, opponent,
             assert opponent_click_reward == 0, 'Expected 0 but received {} for opponent_click_reward'.format(opponent_click_reward)
 
             if my_click_reward == 14:
-                # My agent succeed, so terminate opponent's trial immediately
-                opponent_click_reward = -1
+                # My agent succeed, but still give chance to opponent. If opponent succeeds subsequently, subtract 5 from click_reward
+                extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
+                                                                               opponent_replay_buffer, opponent_dqn, target_dqn,
+                                                                               sess, opponent_vars, e_opponent)
+                opponent_effort_reward = opponent_effort_reward + extra_effort_reward
+                if extra_click_reward == 14:
+                    extra_click_reward = 9
+                opponent_click_reward = extra_click_reward
                 opponent_env.fail_rate.append(0)
 
             else:
@@ -121,8 +127,14 @@ def determine_reward(my_agent, opponent,
             assert my_click_reward == 0, 'Expected 0 but received {} for my_click_reward'.format(my_click_reward)
 
             if opponent_click_reward == 14:
-                # Opponent succeed, so terminate my agent's trial immediately
-                my_click_reward = -1
+                # If opponent succeeded, still give chance to my_agent but -5 if my_agent succeed subsequently
+                extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
+                                                                               my_agent_replay_buffer, my_agent_dqn, target_dqn,
+                                                                               sess, my_agent_vars, e_my_agent)
+                my_effort_reward += extra_effort_reward
+                if extra_click_reward == 14:
+                    extra_click_reward = 9
+                my_click_reward = extra_click_reward
                 my_agent_env.fail_rate.append(0)
 
             else:
