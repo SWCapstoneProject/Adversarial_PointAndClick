@@ -35,15 +35,18 @@ def retrain():
         my_agent_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="my_agent")
         opponent_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="opponent")
         target_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="target")
-
-        my_agent_dqn.load(path_to_model='./models_with_diff_termination/2380000_-2.334_0.208891')
-        opponent_dqn.load(path_to_model='./models_with_diff_termination/2380000_-2.604_0.211344')
-
+        #target_dqn2 = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="target2")
+        
         sess.run(tf.global_variables_initializer())
 
-        # initial copy q_net -> target_net
+
+        my_agent_dqn.load(path_to_model='./models_with_diff_termination/1800000_-2.761_0.217933')
+        opponent_dqn.load(path_to_model='./models_with_diff_termination/1800000_-2.786_0.219572')
+
         my_agent_vars = get_copy_var_ops(dest_scope_name="target", src_scope_name="my_agent")
         opponent_vars = get_copy_var_ops(dest_scope_name="target", src_scope_name="opponent")
+        #sess.run(tf.global_variables_initializer())
+        # initial copy q_net -> target_net
 
         sess.run(my_agent_vars)
         sess.run(opponent_vars)

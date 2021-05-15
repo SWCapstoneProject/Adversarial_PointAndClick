@@ -79,6 +79,7 @@ class DQN:
 
     def load(self, path_to_model):
         saver = tf.train.import_meta_graph(f'{path_to_model}/model_with_diff_termination.meta')
+        print(tf.train.latest_checkpoint('./'))
         saver.restore(self.session, tf.train.latest_checkpoint(f'{path_to_model}/'))
 
     def save(self, run, score_mean, loss_mean):
