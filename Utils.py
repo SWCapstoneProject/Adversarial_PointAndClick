@@ -67,7 +67,7 @@ def determine_reward(my_agent, opponent,
                      my_agent_replay_buffer, opponent_replay_buffer,
                      my_effort_reward, my_click_reward,
                      opponent_effort_reward, opponent_click_reward,
-                     my_agent_dqn, opponent_dqn, target_dqn, sess,
+                     my_agent_dqn, opponent_dqn, my_target_dqn, op_target_dqn, sess,
                      my_agent_vars, opponent_vars, e_my_agent, e_opponent):
 
     # TODO : Reassigning my_click_reward and opponent_click_reward needs to be modified for Reward Reshaping
@@ -102,7 +102,7 @@ def determine_reward(my_agent, opponent,
             if my_click_reward == 14:
                 # My agent succeed, but still give chance to opponent. If opponent succeeds subsequently, subtract 5 from click_reward
                 extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
-                                                                               opponent_replay_buffer, opponent_dqn, target_dqn,
+                                                                               opponent_replay_buffer, opponent_dqn, op_target_dqn,
                                                                                sess, opponent_vars, e_opponent)
                 opponent_effort_reward = opponent_effort_reward + extra_effort_reward
                 if extra_click_reward == 14:
@@ -115,7 +115,7 @@ def determine_reward(my_agent, opponent,
                 # Note that opponent_click_reward == 0 at this point so we just assign extra click reward as opponent_click_reward
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
-                                                                               opponent_replay_buffer, opponent_dqn, target_dqn,
+                                                                               opponent_replay_buffer, opponent_dqn, op_target_dqn,
                                                                                sess, opponent_vars, e_opponent)
                 opponent_effort_reward = opponent_effort_reward + extra_effort_reward
                 opponent_click_reward = extra_click_reward
@@ -129,7 +129,7 @@ def determine_reward(my_agent, opponent,
             if opponent_click_reward == 14:
                 # If opponent succeeded, still give chance to my_agent but -5 if my_agent succeed subsequently
                 extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
-                                                                               my_agent_replay_buffer, my_agent_dqn, target_dqn,
+                                                                               my_agent_replay_buffer, my_agent_dqn, my_target_dqn,
                                                                                sess, my_agent_vars, e_my_agent)
                 my_effort_reward += extra_effort_reward
                 if extra_click_reward == 14:
@@ -142,7 +142,7 @@ def determine_reward(my_agent, opponent,
                 # Note that my_click_reward == 0 at this point so we just assign the extra click reward as my_click_reward
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
-                                                                               my_agent_replay_buffer, my_agent_dqn, target_dqn,
+                                                                               my_agent_replay_buffer, my_agent_dqn, my_target_dqn,
                                                                                sess, my_agent_vars, e_my_agent)
                 my_effort_reward += extra_effort_reward
                 my_click_reward = extra_click_reward

@@ -34,12 +34,14 @@ def main():
 
         my_agent_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="my_agent")
         opponent_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="opponent")
-        target_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="target")
+        my_target_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="my_target")
+        op_target_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="op_target")
+
         sess.run(tf.global_variables_initializer())
 
         # initial copy q_net -> target_net
-        my_agent_vars = get_copy_var_ops(dest_scope_name="target", src_scope_name="my_agent")
-        opponent_vars = get_copy_var_ops(dest_scope_name="target", src_scope_name="opponent")
+        my_agent_vars = get_copy_var_ops(dest_scope_name="my_target", src_scope_name="my_agent")
+        opponent_vars = get_copy_var_ops(dest_scope_name="op_target", src_scope_name="opponent")
 
         sess.run(my_agent_vars)
         sess.run(opponent_vars)
@@ -87,11 +89,11 @@ def main():
                                                               my_agent_replay_buffer, opponent_replay_buffer,
                                                               my_effort_reward, my_click_reward,
                                                               opponent_effort_reward, opponent_click_reward,
-                                                              my_agent_dqn, opponent_dqn, target_dqn, sess,
+                                                              my_agent_dqn, opponent_dqn, my_target_dqn, op_target_dqn, sess,
                                                               my_agent_vars, opponent_vars, e_my_agent, e_opponent)
                 # Save the experience to our buffer
-                my_agent.update_replay_buffer(my_agent_replay_buffer, my_action, my_reward, my_next_state, my_agent_dqn, target_dqn)
-                opponent.update_replay_buffer(opponent_replay_buffer, opponent_action, opponent_reward, opponent_next_state, opponent_dqn, target_dqn)
+                my_agent.update_replay_buffer(my_agent_replay_buffer, my_action, my_reward, my_next_state, my_agent_dqn, my_target_dqn)
+                opponent.update_replay_buffer(opponent_replay_buffer, opponent_action, opponent_reward, opponent_next_state, opponent_dqn, op_target_dqn)
 
                 if my_agent.step_count % TARGET_UPDATE_FREQUENCY == 0:
                     sess.run(my_agent_vars)
