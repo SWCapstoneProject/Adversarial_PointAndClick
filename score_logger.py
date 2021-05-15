@@ -4,7 +4,7 @@ import csv
 import shutil
 
 
-CSV_PATH = "./outputs_with_diff_termination/"
+CSV_PATH = "./outputs_with_diff_termination_retrained_0515/"
 
 class ScoreLogger:
 
@@ -25,15 +25,15 @@ class ScoreLogger:
         os.mkdir(CSV_PATH)
 
     # Ours - added agent number for save filename
-    def add_csv(self, loss, q_value, score, time, effort, click, run, agent_number):
-        path = "./outputs_with_diff_termination/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
+    def add_csv(self, loss, q_value, score, time, effort, click, run, error_rate, fail_rate, agent_number):
+        path = "./outputs_with_diff_termination_retrained_0515/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
         if not os.path.exists(path):
             with open(path, "w"):
                 pass
         scores_file = open(path, "a", newline='')
         with scores_file:
             writer = csv.writer(scores_file)
-            writer.writerow([loss, q_value, score, time, effort, click])
+            writer.writerow([loss, q_value, score, time, effort, click, error_rate, fail_rate])
 
         self.scores.append(score)
         self.scores_short.append(score)

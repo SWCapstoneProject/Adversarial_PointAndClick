@@ -82,7 +82,7 @@ def main():
                 opponent_next_state, opponent_effort_reward, opponent_click_reward, opponent.done, _ = opponent_env.step(opponent_action)
 
                 # Determine Reward
-                my_reward, opponent_reward = determine_reward(my_agent, opponent,
+                my_reward, opponent_reward, my_click_reward, opponent_click_reward = determine_reward(my_agent, opponent,
                                                               my_agent_env, opponent_env,
                                                               my_agent_replay_buffer, opponent_replay_buffer,
                                                               my_effort_reward, my_click_reward,
@@ -103,8 +103,8 @@ def main():
                 opponent.update_step_result(opponent_reward, opponent_next_state)
 
             # After One Episode has been finished, log the current state of each agent
-            log_data(my_agent, my_agent_env, my_agent_score_logger, episode, agent_number=1)
-            log_data(opponent, opponent_env, opponent_score_logger, episode, agent_number=2)
+            log_data(my_agent, my_agent_env, my_agent_score_logger, episode, my_click_reward, agent_number=1)
+            log_data(opponent, opponent_env, opponent_score_logger, episode, opponent_click_reward, agent_number=2)
 
             # Save the model
             if episode % MODEL_SAVE_PERIOD == 0 and episode >= MODEL_SAVE_PERIOD:
