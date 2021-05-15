@@ -36,7 +36,7 @@ def retrain():
         opponent_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="opponent")
         target_dqn = dqn.DQN(sess, INPUT_SIZE, OUTPUT_SIZE, name="target")
 
-        my_aqent_dqn.load(path_to_model='./models_with_diff_termination/2380000_-2.334_0.208891')
+        my_agent_dqn.load(path_to_model='./models_with_diff_termination/2380000_-2.334_0.208891')
         opponent_dqn.load(path_to_model='./models_with_diff_termination/2380000_-2.604_0.211344')
 
         sess.run(tf.global_variables_initializer())
