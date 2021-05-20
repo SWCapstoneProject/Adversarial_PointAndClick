@@ -4,6 +4,7 @@ import os
 from tqdm import tqdm
 import numpy as np
 from copy import deepcopy
+from Utils import make_directory
 
 # CSV Data Related Constants
 # This module reads the file test_trajectory.csv with columns
@@ -13,7 +14,7 @@ NUM_TASKS = 8
 NUM_TRIALS = 200
 
 # Output Video Format
-VIDEO_SAVEPATH = os.path.join('../result')
+VIDEO_SAVEPATH = make_directory(os.path.join('../result'))
 CODEC = cv2.VideoWriter_fourcc(*'MPV4')
 FPS = 30
 VIDEO_WIDTH = 1200

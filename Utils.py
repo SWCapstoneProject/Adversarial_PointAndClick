@@ -78,8 +78,8 @@ def determine_reward(my_agent, opponent,
 
             if my_click_reward == 14 and opponent_click_reward == 14:
                 # Both Succeed : my_click_reward == 11, opponent_click_reward == 11
-                pass 
-                
+                pass
+
             elif my_click_reward == 14 and opponent_click_reward == -1:
                 # My Agent Won, Opponent failed : my_click_reward == 14, opponent_click_reward == -1
                 pass
@@ -179,7 +179,7 @@ def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number
         print("Agent {} Episode: {:}, Reward: {:.4}, Loss: {:.4}, Q Value: {:.4}, Time: {:.4} (SD: {:.4}), ER: {:.4}, FR: {:.4}".format(
             agent_number, episode, float(ave), float(ave_loss), float(ave_q), float(time_mean), float(time_std), float(error_rate), float(fail_rate)))
 
-    
+
 
 def save_model(score_logger, agent_dqn, episode, agent_type):
     _, score_ave, _, _ = score_logger.score_show()
@@ -187,3 +187,9 @@ def save_model(score_logger, agent_dqn, episode, agent_type):
 
     agent_dqn.save(episode, score_ave, loss_ave)
     print("{} model saved".format(agent_type), episode, score_ave, loss_ave)
+
+
+def make_directory(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    return directory
