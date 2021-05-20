@@ -5,6 +5,7 @@
 pac
 
 # Directories
+/result
 /models/*
 /outputs/*
 /*_models/
