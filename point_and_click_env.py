@@ -192,7 +192,7 @@ class Env(gym.Env):
 
         # Point-and-Click model
         c_otg_dx, c_otg_dy, c_otg_vel_x, c_otg_vel_y, time_click, cursor_delta, effort, h_pos_x, h_pos_y, vel_p, target_info, hand_delta = \
-            pac.model(state_true, state_cog, para_bump, para_icp, para_env)
+            pac.model(state_true, state_cog, para_bump, para_icp, para_env, agent_name=self.name)
 
         active_time = len(c_otg_dx) * self.Interval
         time_reward = -(self.timeWeight * active_time)

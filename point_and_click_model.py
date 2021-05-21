@@ -16,7 +16,7 @@ import modules.mouse_module as mouse
 import modules.upper_limb_module as limb
 
 
-def model(state_true, state_cog, para_bump, para_icp, para_env):
+def model(state_true, state_cog, para_bump, para_icp, para_env, agent_name):
 
     # States
     cursor_pos_x, cursor_pos_y, cursor_vel_x, cursor_vel_y = state_cog
@@ -41,7 +41,12 @@ def model(state_true, state_cog, para_bump, para_icp, para_env):
     target_vel_y *= -1
 
     # Target information with the visual noise
-    target_vel_x, target_vel_y = visual.visual_speed_noise(target_vel_x, target_vel_y)
+    if agent_name == 'my_agent':
+        target_vel_x, target_vel_y = visual.visual_speed_noise_for_my_agent(target_vel_x, target_vel_y)
+    elif agent_name == 'opponent':
+        target_vel_x, target_vel_y = visual.visual_speed_noise_for_opponent(target_vel_x, target_vel_y)
+    else:
+        exit(1)
 
     # Target information at RP
     target_pos_x, target_vel_x = motor.boundary(Tp, target_pos_x, target_vel_x, interval, boundary_width, target_radius)
