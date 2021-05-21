@@ -59,7 +59,7 @@ class Env(gym.Env):
         When the cursor clicks the target
     """
 
-    def __init__(self, agent_name, nc, cMu, cSigma, nu, delta):
+    def __init__(self, agent_name='agent', nc=[0.2, 0.02], cMu=0.185, cSigma=0.09015, nu=19.931, delta=0.399):
 
         # User Parameters for BUMP model
         self.name = agent_name
