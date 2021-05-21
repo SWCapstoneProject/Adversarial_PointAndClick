@@ -59,18 +59,23 @@ class Env(gym.Env):
         When the cursor clicks the target
     """
 
-    def __init__(self, agent_name):
+    def __init__(self, agent_name, nc, cMu, cSigma, nu, delta):
 
         # User Parameters for BUMP model
         self.name = agent_name
         self.Tp = 0.1  # Planning time
-        self.nc = [0.2, 0.02]  # Motor noise parameter
+        self.nc = nc
+        #self.nc = [0.2, 0.02]  # Motor noise parameter
 
         # User Parameters for ICP model
-        self.cMu = 0.185
-        self.cSigma = 0.09015
-        self.nu = 19.931
-        self.delta = 0.399
+        self.cMu = cMu
+        self.cSigma = cSigma
+        self.nu = nu
+        self.delta = delta
+        #self.cMu = 0.185
+        #self.cSigma = 0.09015
+        #self.nu = 19.931
+        #self.delta = 0.399
         self.fixed = False
 
         # Hand to Mouse Parameters
@@ -154,8 +159,10 @@ class Env(gym.Env):
                 # User value
                 if self.name == 'my_agent':
                     t_vel_x, t_vel_y = visual.visual_speed_noise_for_my_agent(self.targetVel[0], self.targetVel[1])
-                else:
+                elif self.name == 'opponent':
                     t_vel_x, t_vel_y = visual.visual_speed_noise_for_opponent(self.targetVel[0], self.targetVel[1])
+                else:
+                    exit(1)
 
                 t_pos_x, t_vel_x = motor.boundary(clutch_idx, t_pos_x, t_vel_x, self.Interval, self.window_width, target_radius)
                 t_pos_y, t_vel_y = motor.boundary(clutch_idx, t_pos_y, t_vel_y, self.Interval, self.window_height, target_radius)
@@ -274,8 +281,10 @@ class Env(gym.Env):
 
         if self.name == 'my_agent':
             tv_x, tv_y = visual.visual_speed_noise_for_my_agent(-tv_x, -tv_y)
-        else:
+        elif self.name == 'opponent':
             tv_x, tv_y = visual.visual_speed_noise_for_opponent(-tv_x, -tv_y)
+        else:
+            exit(1)
 
         tp_x, tv_x = motor.boundary(tp, tp_x, tv_x, self.Interval, self.window_width, target_radius)
         tp_y, tv_y = motor.boundary(tp, tp_y, tv_y, self.Interval, self.window_height, target_radius)

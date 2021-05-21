@@ -27,14 +27,8 @@ def main():
     my_agent_score_logger = ScoreLogger(env_name="my_agent", ave_num=1000, save_period=CSV_SAVE_PERIOD)
     opponent_score_logger = ScoreLogger(env_name="opponent", ave_num=1000, save_period=CSV_SAVE_PERIOD)
 
-    my_agent_env = Env(agent_name='my_agent')
-    my_agent_env.cSigma = 0.06
-    my_agent_env.cMu = 0.3
-    my_agent_env.nu = 40
-    my_agent_env.delta = 0.25
-
-    opponent_env = Env(agent_name='opponent')
-    opponent_env.nc = [0.24, 0.024]
+    my_agent_env = Env(agent_name='my_agent', nc=[0.2, 0.02], cMu=0.3, cSigma=0.06, nu=40, delta=0.25)
+    opponent_env = Env(agent_name='opponent', nc=[0.24, 0.024], cMu=0.185, cSigma=0.09015, nu=19.931, delta=0.399)
 
     with tf.Session() as sess:
 
