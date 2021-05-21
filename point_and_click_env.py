@@ -59,9 +59,10 @@ class Env(gym.Env):
         When the cursor clicks the target
     """
 
-    def __init__(self):
+    def __init__(self, agent_name):
 
         # User Parameters for BUMP model
+        self.name = agent_name
         self.Tp = 0.1  # Planning time
         self.nc = [0.2, 0.02]  # Motor noise parameter
 
@@ -151,7 +152,11 @@ class Env(gym.Env):
                 clutch_idx = int(np.ceil(clutch_time / self.Interval))
 
                 # User value
-                t_vel_x, t_vel_y = visual.visual_speed_noise(self.targetVel[0], self.targetVel[1])
+                if self.name == 'my_agent':
+                    t_vel_x, t_vel_y = visual.visual_speed_noise_for_my_agent(self.targetVel[0], self.targetVel[1])
+                else:
+                    t_vel_x, t_vel_y = visual.visual_speed_noise_for_opponent(self.targetVel[0], self.targetVel[1])
+
                 t_pos_x, t_vel_x = motor.boundary(clutch_idx, t_pos_x, t_vel_x, self.Interval, self.window_width, target_radius)
                 t_pos_y, t_vel_y = motor.boundary(clutch_idx, t_pos_y, t_vel_y, self.Interval, self.window_height, target_radius)
                 self.state = (self.cursorPos[0], self.cursorPos[1], 0, 0, t_pos_x, t_pos_y, t_vel_x, t_vel_y, target_radius, 0, 0)
@@ -266,7 +271,12 @@ class Env(gym.Env):
 
         tp_x, tv_x = motor.boundary(tp, self.targetPos[0], -self.targetVel[0], self.Interval, self.window_width, target_radius)
         tp_y, tv_y = motor.boundary(tp, self.targetPos[1], -self.targetVel[1], self.Interval, self.window_height, target_radius)
-        tv_x, tv_y = visual.visual_speed_noise(-tv_x, -tv_y)
+
+        if self.name == 'my_agent':
+            tv_x, tv_y = visual.visual_speed_noise_for_my_agent(-tv_x, -tv_y)
+        else:
+            tv_x, tv_y = visual.visual_speed_noise_for_opponent(-tv_x, -tv_y)
+
         tp_x, tv_x = motor.boundary(tp, tp_x, tv_x, self.Interval, self.window_width, target_radius)
         tp_y, tv_y = motor.boundary(tp, tp_y, tv_y, self.Interval, self.window_height, target_radius)
 

@@ -4,7 +4,7 @@ import csv
 import shutil
 
 
-CSV_PATH = "./outputs_real/"
+CSV_PATH = "./outputs_parameter/"
 
 class ScoreLogger:
 
@@ -26,7 +26,7 @@ class ScoreLogger:
 
     # Ours - added agent number for save filename
     def add_csv(self, loss, q_value, score, time, effort, click, run, error_rate, fail_rate, agent_number):
-        path = "./outputs_real/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
+        path = "./outputs_parameter/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
         if not os.path.exists(path):
             with open(path, "w"):
                 pass

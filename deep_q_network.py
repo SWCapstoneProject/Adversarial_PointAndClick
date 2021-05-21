@@ -82,8 +82,8 @@ class DQN:
         saver.restore(self.session, tf.train.latest_checkpoint(f'{path_to_model}/'))
 
     def save(self, run, score_mean, loss_mean):
-        if not os.path.exists('./models_real'):
-            os.mkdir('./models_real')
-        filename = "models_real/" + str(run) + "_" + str(round(score_mean, 3)) + "_" + str(round(loss_mean, 6)) + "_" + self.net_name + "/model"
+        if not os.path.exists('./models_parameter'):
+            os.mkdir('./models_parameter')
+        filename = "models_parameter/" + str(run) + "_" + str(round(score_mean, 3)) + "_" + str(round(loss_mean, 6)) + "_" + self.net_name + "/model"
         saver = tf.train.Saver()
         saver.save(self.session, filename)

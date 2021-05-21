@@ -16,7 +16,7 @@ from score_logger import ScoreLogger
 from collections import deque
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 def main():
@@ -27,8 +27,14 @@ def main():
     my_agent_score_logger = ScoreLogger(env_name="my_agent", ave_num=1000, save_period=CSV_SAVE_PERIOD)
     opponent_score_logger = ScoreLogger(env_name="opponent", ave_num=1000, save_period=CSV_SAVE_PERIOD)
 
-    my_agent_env = Env()
-    opponent_env = Env()
+    my_agent_env = Env(agent_name='my_agent')
+    my_agent_env.cSigma = 0.06
+    my_agent_env.cMu = 0.3
+    my_agent_env.nu = 40
+    my_agent_env.delta = 0.25
+
+    opponent_env = Env(agent_name='opponent')
+    opponent_env.nc = [0.24, 0.024]
 
     with tf.Session() as sess:
 
@@ -75,7 +81,7 @@ def main():
 
                 if np.random.rand() < e_my_agent:
                     my_action = my_agent_env.action_space.sample()
-		
+
                 if np.random.rand() < e_opponent:
                     opponent_action = opponent_env.action_space.sample()
 
