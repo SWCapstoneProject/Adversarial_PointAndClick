@@ -13,7 +13,7 @@ NUM_TASKS = 1
 NUM_TRIALS = 199
 
 # Output Video Format
-VIDEO_SAVEPATH = make_directory(os.path.join('../video'))
+VIDEO_SAVEPATH = make_directory(os.path.join('../videos/Improved_Decision_Making_VS_Improved_Motor_Execution'))
 CSV_OURS = 'trajectory_improved_Decision_making.csv'
 CSV_PROF = 'trajectory_improved_Motor_execution.csv'
 

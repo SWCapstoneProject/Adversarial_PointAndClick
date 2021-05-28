@@ -14,7 +14,7 @@ NUM_TASKS = 7
 NUM_TRIALS = 199
 
 # Output Video Format
-VIDEO_SAVEPATH = make_directory(os.path.join('../result'))
+VIDEO_SAVEPATH = make_directory(os.path.join('../videos/Adversarial'))
 CSV_NAME = 'trajectory_my_agent.csv'
 CODEC = cv2.VideoWriter_fourcc(*'MPV4')
 FPS = 30
@@ -23,7 +23,6 @@ VIDEO_HEIGHT = 1200
 
 
 def add_cursor_and_target_to_trajectory_frame(cursor_x, cursor_y, target_x, target_y, trajectory_image, target_radius):
-    # TODO : Consider Target Radius
     cursor_x = int(VIDEO_WIDTH * cursor_x)
     cursor_y = int(VIDEO_WIDTH * cursor_y)
     target_x = int(VIDEO_WIDTH * target_x)
