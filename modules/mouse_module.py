@@ -15,8 +15,8 @@ from scipy import interpolate
 import csv
 from scipy import interpolate
 
-PATH_GAIN = './modules/materials/0.6875.txt'
-PATH_ROTATION_MAP = './modules/materials/rotation_map_rad.csv'
+PATH_GAIN = '../modules/materials/0.6875.txt'
+PATH_ROTATION_MAP = '../modules/materials/rotation_map_rad.csv'
 
 ### Mouse acceleration function
 ###
@@ -115,7 +115,7 @@ def get_cursor_displacement(hand_start_loc, hand_end_loc, user_forearm_length, g
     hand_dx = (hand_end_loc[0] - hand_start_loc[0]) / hand_displacement
     hand_dy = (hand_end_loc[1] - hand_start_loc[1]) / hand_displacement
 
-    # resulting cursor dx and dy after passing through the mouse disturbance effect        
+    # resulting cursor dx and dy after passing through the mouse disturbance effect
     cursor_dx = (hand_dx * np.cos(net_hand_rotation / 2 + prev_hand_orientation) - hand_dy * np.sin(net_hand_rotation / 2 + prev_hand_orientation)) * cursor_displacement
     cursor_dy = (hand_dx * np.sin(net_hand_rotation / 2 + prev_hand_orientation) + hand_dy * np.cos(net_hand_rotation / 2 + prev_hand_orientation)) * cursor_displacement
 
