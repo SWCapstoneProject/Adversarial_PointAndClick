@@ -19,7 +19,7 @@ differs in both perspectives - qualitative and quantitative (trial completion ti
 The result of an ablation study which trained 2 agents with different human factors also implies the importance of certain human factors.<br/> 
 
 This respository provides the code for training, visualizing, and analyzing the results.<br/>
-For more information, please refer presentation_utils or our <a href="https://www.youtube.com/watch?v=DLQu1RDsS6w&t=140s" target="_blank">youtube video</a>. (English version comming soon!) <br/>
+For more information, please refer presentation_utils or our <a href="https://www.youtube.com/watch?v=DLQu1RDsS6w&t=140s" target="_blank">youtube video</a>. (English version comming up soon!) <br/>
 
 ## How To Run
 ### 1. Train
