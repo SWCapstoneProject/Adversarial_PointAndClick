@@ -8,13 +8,14 @@
 </p>
 
 <p align="center">
-  <img width="850" height="400" src="https://github.com/SWCapstoneProject/Adversarial_PointAndClick/blob/main/misc/teaser2.png">
+  <img width="850" height="375" src="https://github.com/SWCapstoneProject/Adversarial_PointAndClick/blob/main/misc/teaser2.png">
 </p>
 
-We propose a Point-and-Click Simulator that well respects the nature of the real world Point-and-Click environment where more than 2 agents compete to acquire the same target.<br/>
-By jointly training 2 agents in an adversarial environment using Reinforcement Learning, we show how the optimal policy of Point-and-Click tasks can change in adversarial environments, compared to non-adversarial environments.<br/>
+## Introduction
+We propose a Point-and-Click Simulator that well respects the nature of the real world Point-and-Click environment where more than 2 agents compete to acquire the same target.
+By jointly training 2 agents in an adversarial environment using Reinforcement Learning, we show how the optimal policy of Point-and-Click tasks can change in adversarial environments, compared to non-adversarial environments.
 Our comparison with the agent that was trained in a non-adversarial environment (Do et al.) shows that the optimal policy of Point-and-Click tasks in an adversarial environment 
-differs in both perspectives - qualitative and quantitative (trial completion time & click failure rate).<br/>
+differs in both perspectives - qualitative and quantitative (trial completion time & click failure rate).
 The result of an ablation study which trained 2 agents with different human factors also implies the importance of certain human factors.<br/> 
 
 This respository provides the code for training, visualizing, and analyzing the results.<br/>
