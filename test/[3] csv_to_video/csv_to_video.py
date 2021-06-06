@@ -1,3 +1,13 @@
+"""
+Video Generating Module
+
+1) Converts a csv file into video
+2) The input csv file must contain per timestep cursor position, target position, and radius
+
+This code was written by Jinhyung Park.
+"""
+
+
 import pandas as pd
 import cv2
 import os
@@ -14,8 +24,8 @@ NUM_TASKS = 7
 NUM_TRIALS = 199
 
 # Output Video Format
-VIDEO_SAVEPATH = make_directory(os.path.join('../videos/Adversarial'))
-CSV_NAME = 'trajectory_my_agent.csv'
+VIDEO_SAVEPATH = make_directory(os.path.join('../../videos/Adversarial'))
+CSV_NAME = 'trajectory_my_agent_4090000.csv'
 CODEC = cv2.VideoWriter_fourcc(*'MPV4')
 FPS = 30
 VIDEO_WIDTH = 1200
@@ -60,7 +70,7 @@ def update_trajectory_frame(base_image, cursor_x, cursor_y, target_x, target_y, 
              # BGR color - Black
              (0, 0, 0),
              # Thickness
-             1)
+             4)
 
     # Target (Red)
     cv2.line(base_image,
@@ -71,7 +81,7 @@ def update_trajectory_frame(base_image, cursor_x, cursor_y, target_x, target_y, 
              # BGR color - Red
              (0, 0, 255),
              # Thickness
-             1)
+             4)
 
 
 def main():

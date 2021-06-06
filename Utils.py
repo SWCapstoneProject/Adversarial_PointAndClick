@@ -56,9 +56,6 @@ def compute_extra_reward(agent, agent_env, replay_buffer, agent_dqn, target_dqn,
 
         agent.update_step_result(effort_reward + click_reward, next_state)
 
-    # checks the last value of click_reward in the while loop
-    assert click_reward != 0
-
     return total_extra_effort, click_reward
 
 
@@ -70,37 +67,18 @@ def determine_reward(my_agent, opponent,
                      my_agent_dqn, opponent_dqn, my_target_dqn, op_target_dqn, sess,
                      my_agent_vars, opponent_vars, e_my_agent, e_opponent):
 
-    # TODO : Reassigning my_click_reward and opponent_click_reward needs to be modified for Reward Reshaping
-
     if my_agent.done:
         if opponent.done:
-            # When both agents clicked at the same time (regardless of success/failure)
-
-            if my_click_reward == 14 and opponent_click_reward == 14:
-                # Both Succeed : my_click_reward == 11, opponent_click_reward == 11
-                pass
-
-            elif my_click_reward == 14 and opponent_click_reward == -1:
-                # My Agent Won, Opponent failed : my_click_reward == 14, opponent_click_reward == -1
-                pass
-
-            elif my_click_reward == -1 and opponent_click_reward == 14:
-                # My Agent failed, Opponent Won : my_click_reward == -1, opponent_click_reward == 14
-                pass
-
-            else:
-                assert my_click_reward == -1, 'Expected -1 but received {} for my_click_reward'.format(my_click_reward)
-                assert opponent_click_reward == -1, 'Expected -1 but received {} for opponent_click_reward'.format(opponent_click_reward)
-                # Both Failed : my_click_reward == -1, opponent_click_reward == -1
-                pass
+            # When both agents clicked at the same time
+            # No need to recompute reward
+            pass
 
         else:
             # When My agent clicked first, opponent didn't click yet
-            assert my_click_reward == 14 or my_click_reward == -1, 'Expected 14 or -1 but received {} for my_click_reward'.format(my_click_reward)
-            assert opponent_click_reward == 0, 'Expected 0 but received {} for opponent_click_reward'.format(opponent_click_reward)
 
             if my_click_reward == 14:
-                # My agent succeed, but still give chance to opponent. If opponent succeeds subsequently, subtract 5 from click_reward
+                # My agent succeeded first
+                # If opponent succeeds afterwards, give click_reward = 9
                 extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
                                                                                opponent_replay_buffer, opponent_dqn, op_target_dqn,
                                                                                sess, opponent_vars, e_opponent)
@@ -111,8 +89,8 @@ def determine_reward(my_agent, opponent,
                 opponent_env.fail_rate.append(0)
 
             else:
-                # My agent failed, so opponent can still go on
-                # Note that opponent_click_reward == 0 at this point so we just assign extra click reward as opponent_click_reward
+                # My agent failed first
+                # Wait until opponent finishes the episode
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(opponent, opponent_env,
                                                                                opponent_replay_buffer, opponent_dqn, op_target_dqn,
@@ -122,12 +100,11 @@ def determine_reward(my_agent, opponent,
 
     else:
         if opponent.done:
-            # My Agent didn't click yet, opponent clicked first
-            assert opponent_click_reward == 14 or opponent_click_reward == -1, 'Expected 14 or -1 but received {} for opponent_click_reward'.format(opponent_click_reward)
-            assert my_click_reward == 0, 'Expected 0 but received {} for my_click_reward'.format(my_click_reward)
+            # When opponent clicked first, my agent didn't click yet
 
             if opponent_click_reward == 14:
-                # If opponent succeeded, still give chance to my_agent but -5 if my_agent succeed subsequently
+                # Opponent succeeded first
+                # If my_agent succeeds afterwards, give click_reward = 9
                 extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
                                                                                my_agent_replay_buffer, my_agent_dqn, my_target_dqn,
                                                                                sess, my_agent_vars, e_my_agent)
@@ -138,8 +115,8 @@ def determine_reward(my_agent, opponent,
                 my_agent_env.fail_rate.append(0)
 
             else:
-                # Opponent failed, so my agent can still go on
-                # Note that my_click_reward == 0 at this point so we just assign the extra click reward as my_click_reward
+                # Opponent failed first
+                # Wait until my_agent finishes the episode
 
                 extra_effort_reward, extra_click_reward = compute_extra_reward(my_agent, my_agent_env,
                                                                                my_agent_replay_buffer, my_agent_dqn, my_target_dqn,
@@ -148,9 +125,9 @@ def determine_reward(my_agent, opponent,
                 my_click_reward = extra_click_reward
 
         else:
-            # My Agent, Opponent didn't click yet
-            assert my_click_reward == 0, 'Expected 0 but received {} for my_click_reward'.format(my_click_reward)
-            assert opponent_click_reward == 0, 'Expected 0 but received {} for opponent_click_reward'.format(my_click_reward)
+            # My agent, opponent didn't click yet
+            # no need to recompute click reward (click reward == 0)
+            pass
 
     my_reward = my_effort_reward + my_click_reward
     opponent_reward = opponent_effort_reward + opponent_click_reward
@@ -158,7 +135,7 @@ def determine_reward(my_agent, opponent,
     return my_reward, opponent_reward, my_click_reward, opponent_click_reward
 
 
-def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number):
+def log_data(agent, agent_env, score_logger, episode, click_reward, print_frequency, agent_number):
 
     error_rate = 1 - (sum(agent_env.error_rate) / len(agent_env.error_rate))
     fail_rate = 1 - (sum(agent_env.fail_rate) / len(agent_env.fail_rate))
@@ -170,7 +147,7 @@ def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number
         score_logger.add_csv(agent.loss / agent.count, agent.q_value / agent.count, agent.score,
                              agent_env.time, agent_env.effort, click_reward, episode, error_rate, fail_rate, agent_number)
 
-    if episode % PRINT_FREQUENCY == 0 or os.path.exists('./check'):
+    if episode % print_frequency == 0 or os.path.exists('./check'):
         _, _, _, ave = score_logger.score_show()
         _, _, _, ave_loss = score_logger.loss_show()
         _, _, _, ave_q = score_logger.q_value_show()
@@ -180,12 +157,11 @@ def log_data(agent, agent_env, score_logger, episode, click_reward, agent_number
             agent_number, episode, float(ave), float(ave_loss), float(ave_q), float(time_mean), float(time_std), float(error_rate), float(fail_rate)))
 
 
-
-def save_model(score_logger, agent_dqn, episode, agent_type):
+def save_model(model_savepath, score_logger, agent_dqn, episode, agent_type):
     _, score_ave, _, _ = score_logger.score_show()
     _, loss_ave, _, _ = score_logger.loss_show()
 
-    agent_dqn.save(episode, score_ave, loss_ave)
+    agent_dqn.save(model_savepath, episode, score_ave, loss_ave)
     print("{} model saved".format(agent_type), episode, score_ave, loss_ave)
 
 

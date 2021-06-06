@@ -59,24 +59,22 @@ class Env(gym.Env):
         When the cursor clicks the target
     """
 
-    def __init__(self, agent_name='agent', nc=[0.2, 0.02], cMu=0.185, cSigma=0.09015, nu=19.931, delta=0.399):
+    def __init__(self, agent_name='agent', nc=[0.2, 0.02], cMu=0.185, cSigma=0.09015, nu=19.931, delta=0.399, sigma=0.15):
 
         # User Parameters for BUMP model
         self.name = agent_name
         self.Tp = 0.1  # Planning time
-        self.nc = nc
-        #self.nc = [0.2, 0.02]  # Motor noise parameter
+        self.nc = nc   # Motor noise parameter
 
         # User Parameters for ICP model
         self.cMu = cMu
         self.cSigma = cSigma
         self.nu = nu
         self.delta = delta
-        #self.cMu = 0.185
-        #self.cSigma = 0.09015
-        #self.nu = 19.931
-        #self.delta = 0.399
         self.fixed = False
+
+        # Visual Perception Related Parameters
+        self.sigma = sigma
 
         # Hand to Mouse Parameters
         self.forearm = 0.257
@@ -157,12 +155,7 @@ class Env(gym.Env):
                 clutch_idx = int(np.ceil(clutch_time / self.Interval))
 
                 # User value
-                if self.name == 'my_agent':
-                    t_vel_x, t_vel_y = visual.visual_speed_noise_for_my_agent(self.targetVel[0], self.targetVel[1])
-                elif self.name == 'opponent':
-                    t_vel_x, t_vel_y = visual.visual_speed_noise_for_opponent(self.targetVel[0], self.targetVel[1])
-                else:
-                    exit(1)
+                t_vel_x, t_vel_y = visual.visual_speed_noise(self.targetVel[0], self.targetVel[1], self.sigma)
 
                 t_pos_x, t_vel_x = motor.boundary(clutch_idx, t_pos_x, t_vel_x, self.Interval, self.window_width, target_radius)
                 t_pos_y, t_vel_y = motor.boundary(clutch_idx, t_pos_y, t_vel_y, self.Interval, self.window_height, target_radius)
@@ -192,7 +185,7 @@ class Env(gym.Env):
 
         # Point-and-Click model
         c_otg_dx, c_otg_dy, c_otg_vel_x, c_otg_vel_y, time_click, cursor_delta, effort, h_pos_x, h_pos_y, vel_p, target_info, hand_delta = \
-            pac.model(state_true, state_cog, para_bump, para_icp, para_env, agent_name=self.name)
+            pac.model(state_true, state_cog, para_bump, para_icp, para_env, self.sigma)
 
         active_time = len(c_otg_dx) * self.Interval
         time_reward = -(self.timeWeight * active_time)
@@ -279,12 +272,7 @@ class Env(gym.Env):
         tp_x, tv_x = motor.boundary(tp, self.targetPos[0], -self.targetVel[0], self.Interval, self.window_width, target_radius)
         tp_y, tv_y = motor.boundary(tp, self.targetPos[1], -self.targetVel[1], self.Interval, self.window_height, target_radius)
 
-        if self.name == 'my_agent':
-            tv_x, tv_y = visual.visual_speed_noise_for_my_agent(-tv_x, -tv_y)
-        elif self.name == 'opponent':
-            tv_x, tv_y = visual.visual_speed_noise_for_opponent(-tv_x, -tv_y)
-        else:
-            exit(1)
+        tv_x, tv_y = visual.visual_speed_noise(-tv_x, -tv_y, self.sigma)
 
         tp_x, tv_x = motor.boundary(tp, tp_x, tv_x, self.Interval, self.window_width, target_radius)
         tp_y, tv_y = motor.boundary(tp, tp_y, tv_y, self.Interval, self.window_height, target_radius)

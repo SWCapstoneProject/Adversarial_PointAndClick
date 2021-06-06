@@ -4,11 +4,9 @@ import csv
 import shutil
 
 
-CSV_PATH = "./outputs_parameter/"
-
 class ScoreLogger:
 
-    def __init__(self, env_name, ave_num, save_period):
+    def __init__(self, env_name, ave_num, save_period, csv_savepath):
         self.scores = deque(maxlen=save_period)
         self.loss = deque(maxlen=save_period)
         self.q_value = deque(maxlen=save_period)
@@ -19,14 +17,15 @@ class ScoreLogger:
         self.save_period = save_period
         self.ave_num = ave_num
 
-        if os.path.exists(CSV_PATH):
-            shutil.rmtree(CSV_PATH)
+        if os.path.exists(csv_savepath):
+            shutil.rmtree(csv_savepath)
 
-        os.mkdir(CSV_PATH)
+        os.mkdir(csv_savepath)
+        self.save_path = csv_savepath
 
     # Ours - added agent number for save filename
     def add_csv(self, loss, q_value, score, time, effort, click, run, error_rate, fail_rate, agent_number):
-        path = "./outputs_parameter/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
+        path = f"./{self.save_path}/output" + str(run // self.ave_num) + f"_agent_{agent_number}" + ".csv"
         if not os.path.exists(path):
             with open(path, "w"):
                 pass

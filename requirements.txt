@@ -1,5 +1,10 @@
 #python==3.7
 numpy==1.16
-tensorflow-gpu==1.*
+tensorflow-gpu==1.15
 gym>=0.7.3
 pandas==1.2.4
+Pillow==8.2.0
+opencv-python==4.5.2.52
+tdqm==0.0.1
+pandas==1.2.4
+
