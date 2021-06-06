@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img width="850" height="400" src="https://github.com/SWCapstoneProject/Adversarial_PointAndClick/blob/main/misc/teaser2.JPG">
+  <img width="850" height="400" src="https://github.com/SWCapstoneProject/Adversarial_PointAndClick/blob/main/misc/teaser2.PNG">
 </p>
 
 We propose a Point-and-Click Simulator that well respects the nature of the real world Point-and-Click environment where more than 2 agents compete to acquire the same target.<br/>
