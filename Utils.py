@@ -1,3 +1,9 @@
+"""
+    This module contains helper functions for train.py
+    The code for get_copy_var_ops function is from "Do et al. A Simulation Model of Intermittently Controlled Point-and-Click Behavior. CHI (2021)"
+    The rest of the code was written by Jinhyung Park, Gyucheol Shim, and Hyunwoo Lee.
+"""
+
 from typing import List
 import numpy as np
 from Constants import *

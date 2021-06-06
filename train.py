@@ -3,7 +3,9 @@ This code is the modified code from https://github.com/hunkim/ReinforcementZeroT
 Double DQN (Nature 2015)
 http://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf
 Notes:
-    The difference is that now there are two DQNs (DQN & Target DQN) for each agent
+    The difference is that now there are two DQNs (DQN & Target DQN) for each agent,
+    and that there are 2 agents that are jointly trained within an adversarial environment.
+
     y_i = r_i + 𝛾 * max(Q(next_state, action; 𝜃_target))
     Loss: (y_i - Q(state, action; 𝜃))^2
     Every C step, 𝜃_target <- 𝜃
