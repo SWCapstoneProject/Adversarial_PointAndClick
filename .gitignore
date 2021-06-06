@@ -5,11 +5,8 @@
 pac
 
 # Directories
-/result
-/models/*
-/outputs/*
-/*_models/
-/*_outputs/
+/videos
+
 # MacBook
 .DS_Store
 
