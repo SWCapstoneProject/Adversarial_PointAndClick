@@ -16,7 +16,7 @@ import modules.mouse_module as mouse
 import modules.upper_limb_module as limb
 
 
-def model(state_true, state_cog, para_bump, para_icp, para_env, sigma):
+def model(state_true, state_cog, para_bump, para_icp, para_env, sigma=0.15):
 
     # States
     cursor_pos_x, cursor_pos_y, cursor_vel_x, cursor_vel_y = state_cog
@@ -55,11 +55,11 @@ def model(state_true, state_cog, para_bump, para_icp, para_env, sigma):
     # Set the prediction horizon
     pred_horizon = Th if threshold_id else Tp
 
-    # Generating the optimal trajectory
+    # Generating the optimal trajectory_data
     otg_ideal_x = motor.otg(cursor_pos_x, cursor_vel_x, target_pos_x, target_vel_x, Th, interval, pred_horizon)
     otg_ideal_y = motor.otg(cursor_pos_y, cursor_vel_y, target_pos_y, target_vel_y, Th, interval, pred_horizon)
 
-    # Correct the trajectory which is out of the bound
+    # Correct the trajectory_data which is out of the bound
     for idx in range(len(otg_ideal_x)):
         if otg_ideal_x[0, idx] <= 0:
             otg_ideal_x[0, idx] = np.finfo(float).tiny
@@ -129,7 +129,7 @@ def model(state_true, state_cog, para_bump, para_icp, para_env, sigma):
     # Acceleration
     acc_sum = sum((acc_x**2 + acc_y**2) ** (1/2))
 
-    # Correct the trajectory which is out of the bound
+    # Correct the trajectory_data which is out of the bound
     for idx in range(len(pos_dx)):
         if c_true_pos_x + sum(pos_dx[:idx + 1]) <= 0:
             pos_dx[idx] = -(c_true_pos_x + sum(pos_dx[:idx]))

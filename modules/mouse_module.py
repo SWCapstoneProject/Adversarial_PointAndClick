@@ -15,8 +15,8 @@ from scipy import interpolate
 import csv
 from scipy import interpolate
 
-PATH_GAIN = '../modules/materials/0.6875.txt'
-PATH_ROTATION_MAP = '../modules/materials/rotation_map_rad.csv'
+PATH_GAIN = './modules/materials/0.6875.txt'
+PATH_ROTATION_MAP = './modules/materials/rotation_map_rad.csv'
 
 ### Mouse acceleration function
 ###

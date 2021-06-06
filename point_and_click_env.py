@@ -12,7 +12,6 @@ from collections import deque
 
 SEED = 1
 
-
 class Env(gym.Env):
     """
     Description:

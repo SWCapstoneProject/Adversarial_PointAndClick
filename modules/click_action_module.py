@@ -11,9 +11,9 @@ This code was written by Seungwon Do (dodoseung)
 import numpy as np
 
 
-# The length of the line where the movement trajectory of the pointer intersects with the target. A, B, C, and radius.
+# The length of the line where the movement trajectory_data of the pointer intersects with the target. A, B, C, and radius.
 def w_intersect(cursor_pos, cursor_vel, target_pos, target_vel, target_radius):
-    # Calculate the distance between the trajectory line of the cursor and the center of the target
+    # Calculate the distance between the trajectory_data line of the cursor and the center of the target
     # result = root((target_radius)^2 - (the distance calculated above)^2)
     # return the 2 * result
 
@@ -22,7 +22,7 @@ def w_intersect(cursor_pos, cursor_vel, target_pos, target_vel, target_radius):
     nominator = np.linalg.norm(np.cross(cursor_pos_end - cursor_pos, cursor_pos - target_pos))
     denominator = np.linalg.norm(cursor_pos_end - cursor_pos)
     center_to_line = nominator / denominator
-    
+
     dist_cursor_target = np.linalg.norm(target_pos - cursor_pos)
     if dist_cursor_target <= target_radius:
         value = np.sqrt(target_radius ** 2 - center_to_line ** 2)

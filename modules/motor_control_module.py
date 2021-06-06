@@ -13,7 +13,7 @@ import math
 import csv
 import os
 
-# Optimal trajectory generation
+# Optimal trajectory_data generation
 # Pos0 and Vel0 are the position and velocity of initial state.
 # PosN and VelN are the position and velocity of final state.
 def otg(pos_0, vel_0, pos_n, vel_n, th, _interval, num):

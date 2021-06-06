@@ -7,4 +7,6 @@ Pillow==8.2.0
 opencv-python==4.5.2.52
 tdqm==0.0.1
 pandas==1.2.4
-
+matplotlib==3.4.2
+scikit-learn==0.24.2
+seaborn==0.11.1
