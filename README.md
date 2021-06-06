@@ -12,7 +12,7 @@
 </p>
 
 ## Introduction
-We propose a Point-and-Click Simulator that well respects the nature of the real world Point-and-Click environment where more than 2 agents compete to acquire the same target.
+We propose a Point-and-Click Simulator that well respects the nature of a real world Point-and-Click environment where more than 2 agents compete with each other to acquire the same target.
 By jointly training 2 agents in an adversarial environment using Reinforcement Learning, we show how the optimal policy of Point-and-Click tasks can change in adversarial environments, compared to non-adversarial environments.
 Our comparison with the agent that was trained in a non-adversarial environment (Do et al.) shows that the optimal policy of Point-and-Click tasks in an adversarial environment 
 differs in both perspectives - qualitative and quantitative (trial completion time & click failure rate).
