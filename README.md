@@ -26,13 +26,13 @@ For more information, please refer presentation_utils or our <a href="https://ww
     pip install -r requirements.txt
     mkdir ./saved_models
     mkdir ./outputs
-    python train.py --mode=same_agent --model_savepath=./saved_models --csv_savepath=./outputs
+    CUDA_VISIBLE_DEVICES=0 python train.py --mode=same_agent --model_savepath=./saved_models --csv_savepath=./outputs
 
 ### 2. Plot Train History
     python evaluation/train_history_graph/plot_graph.py
 
 ### 3. Test & Extract Trajectory Data
-    python evaluation/test/test.py
+    CUDA_VISIBLE_DEVICES=0 python evaluation/test/test.py
 
 ### 4-1. Visualize Result
     python evaluation/video_generator/csv_to_video.py
