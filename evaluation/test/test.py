@@ -3,6 +3,8 @@ Testing Module (CSV extractor)
 
 1) Tests a trained agent and records trajectory_data data, action data into a csv file
 2) Trained model (agent) should be located in ./
+3) Original deep_q_network.py, point_and_click_model.p files should be located in ./
+4) Original modules/*.py files should exist.
 
 This code was written by Hyunwoo Lee.
 """
