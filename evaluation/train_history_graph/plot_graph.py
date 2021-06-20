@@ -21,6 +21,9 @@ base_dir = Path(PATH)
 agent_1_csv_files = glob.glob(str(base_dir / '*agent_1.csv'))
 agent_2_csv_files = glob.glob(str(base_dir / '*agent_2.csv'))
 
+agent_1_csv_files.sort(key=lambda x: len(x))
+agent_2_csv_files.sort(key=lambda x: len(x))
+
 agent1_df = pd.concat((pd.read_csv(f, names=['loss', 'q_value', 'score', 'time', 'effort', 'click']) for f in agent_1_csv_files))
 agent2_df = pd.concat((pd.read_csv(f, names=['loss', 'q_value', 'score', 'time', 'effort', 'click']) for f in agent_2_csv_files))
 
